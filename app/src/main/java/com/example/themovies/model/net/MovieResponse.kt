@@ -3,6 +3,7 @@ package com.example.themovies.model.net
 import com.google.gson.annotations.SerializedName
 
 data class MovieResponse(
+    val dates: Dates,
     val page: Int,
     val results: List<MovieResult>,
     @SerializedName("total_pages")

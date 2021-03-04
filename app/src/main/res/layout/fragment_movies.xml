@@ -29,6 +29,27 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/titlePopularMovies" />
 
+        <TextView
+            android:id="@+id/titleNowPlayingMovies"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin"
+            android:layout_marginTop="@dimen/margin"
+            android:text="@string/now_playing_movies"
+            android:textColor="@color/black"
+            android:textSize="@dimen/main_page_title_text_size"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerPopularMovies" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNowPlayingMovies"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/titleNowPlayingMovies" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

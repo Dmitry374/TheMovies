@@ -2,5 +2,5 @@
     <string name="app_name">TheMovies</string>
 
     <string name="popular_movies">Популярное</string>
-    <string name="new_movies">Новинки</string>
+    <string name="now_playing_movies">Новинки</string>
 </resources>

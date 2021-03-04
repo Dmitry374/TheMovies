@@ -15,4 +15,10 @@ class MoviesInteractor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun loadNowPlayingMovies(): Single<List<Movie>> {
+        return movieRepository.loadNowPlayingMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

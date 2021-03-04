@@ -25,7 +25,11 @@ class MoviesFragment : Fragment() {
         viewModelFactory
     }
 
-    private val moviesAdapter = MoviesAdapter { movie ->
+    private val popularMoviesAdapter = MoviesAdapter { movie ->
+
+    }
+
+    private val nowPlayingMoviesAdapter = MoviesAdapter { movie ->
 
     }
 
@@ -46,13 +50,29 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+
+//        popular movies
+
         recyclerPopularMovies.layoutManager =
             LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
-        recyclerPopularMovies.adapter = moviesAdapter
+        recyclerPopularMovies.adapter = popularMoviesAdapter
 
-        moviesViewModel.movies.observe(viewLifecycleOwner, Observer {
+        moviesViewModel.popularMovies.observe(viewLifecycleOwner, Observer {
             it?.let { movies ->
-                moviesAdapter.submitList(movies)
+                popularMoviesAdapter.submitList(movies)
+            }
+        })
+
+
+//        now playing movies
+
+        recyclerNowPlayingMovies.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerNowPlayingMovies.adapter = nowPlayingMoviesAdapter
+
+        moviesViewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer {
+            it?.let { movies ->
+                nowPlayingMoviesAdapter.submitList(movies)
             }
         })
     }

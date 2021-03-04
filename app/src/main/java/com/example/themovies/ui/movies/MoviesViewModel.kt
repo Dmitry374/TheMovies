@@ -14,25 +14,46 @@ class MoviesViewModel @Inject constructor(
 
     private val compositeDisposable by lazy { CompositeDisposable() }
 
-    private val _movies by lazy { MutableLiveData<List<Movie>>() }
-    val movies: LiveData<List<Movie>>
-        get() = _movies
+    private val _popularMovies by lazy { MutableLiveData<List<Movie>>() }
+    val popularMovies: LiveData<List<Movie>>
+        get() = _popularMovies
 
     private val _popularMoviesNetError by lazy { MutableLiveData<Throwable>() }
     val popularMoviesNetError: LiveData<Throwable>
-        get() = _popularMoviesNetError
+        get() = _nowPlayingMoviesNetError
+
+
+    private val _nowPlayingMovies by lazy { MutableLiveData<List<Movie>>() }
+    val nowPlayingMovies: LiveData<List<Movie>>
+        get() = _nowPlayingMovies
+
+    private val _nowPlayingMoviesNetError by lazy { MutableLiveData<Throwable>() }
+    val nowPlayingMoviesNetError: LiveData<Throwable>
+        get() = _nowPlayingMoviesNetError
 
     init {
         loadPopularMovies()
+        loadNowPlayingMovies()
     }
 
     private fun loadPopularMovies() {
         compositeDisposable.add(
             moviesInteractor.loadPopularMovies()
                 .subscribe({ movies ->
-                    _movies.value = movies
+                    _popularMovies.value = movies
                 }, {
                     _popularMoviesNetError.value = it
+                })
+        )
+    }
+
+    private fun loadNowPlayingMovies() {
+        compositeDisposable.add(
+            moviesInteractor.loadNowPlayingMovies()
+                .subscribe({ movies ->
+                    _nowPlayingMovies.value = movies
+                }, {
+                    _nowPlayingMoviesNetError.value = it
                 })
         )
     }

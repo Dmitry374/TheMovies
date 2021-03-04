@@ -11,4 +11,9 @@ interface ApiService {
     fun loadPopularMovies(
         @Query("page") page: Int = 1
     ): Single<MovieResponse>
+
+    @GET("movie/now_playing")
+    fun loadNowPlayingMovies(
+        @Query("page") page: Int = 1
+    ): Single<MovieResponse>
 }

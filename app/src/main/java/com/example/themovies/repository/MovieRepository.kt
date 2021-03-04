@@ -17,4 +17,11 @@ class MovieRepository(
             }
     }
 
+    fun loadNowPlayingMovies(): Single<List<Movie>> {
+        return apiService.loadNowPlayingMovies()
+            .map { movieResponse ->
+                dataMapper.listMoviesResultToMovieDomain(movieResponse.results)
+            }
+    }
+
 }
