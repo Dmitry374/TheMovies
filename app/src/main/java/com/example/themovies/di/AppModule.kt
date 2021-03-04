@@ -2,6 +2,7 @@ package com.example.themovies.di
 
 import com.example.themovies.BuildConfig
 import com.example.themovies.common.Constants
+import com.example.themovies.domain.MoviesInteractor
 import com.example.themovies.network.ApiService
 import dagger.Module
 import dagger.Provides
@@ -62,5 +63,11 @@ class AppModule {
             .addInterceptor(tokenInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideMoviesInteractor(): MoviesInteractor {
+        return MoviesInteractor()
     }
 }
