@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="@dimen/padding">
+
+    <ImageView
+        android:id="@+id/imageMovieBanner"
+        android:layout_width="@dimen/image_move_banner_width"
+        android:layout_height="@dimen/image_move_banner_height"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/movieTitle"
+        android:layout_width="@dimen/image_move_banner_width"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/small_margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/movie_title_text_size"
+        tools:text="Spider-Man" />
+
+    <TextView
+        android:id="@+id/movieVoteAverage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/small_margin"
+        android:drawablePadding="@dimen/padding_vote_average_compound_drawable"
+        android:textSize="@dimen/movie_vote_average_text_size"
+        app:drawableStartCompat="@drawable/ic_star"
+        tools:text="7.5" />
+</LinearLayout>

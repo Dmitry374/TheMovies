@@ -9,8 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.themovies.App
 import com.example.themovies.R
+import com.example.themovies.ui.movies.adapter.MoviesAdapter
+import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
 class MoviesFragment : Fragment() {
@@ -20,6 +23,10 @@ class MoviesFragment : Fragment() {
 
     private val moviesViewModel: MoviesViewModel by viewModels {
         viewModelFactory
+    }
+
+    private val moviesAdapter = MoviesAdapter { movie ->
+
     }
 
     override fun onAttach(context: Context) {
@@ -39,9 +46,13 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        moviesViewModel.movies.observe(viewLifecycleOwner, Observer {
-            it?.let {
+        recyclerPopularMovies.layoutManager =
+            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerPopularMovies.adapter = moviesAdapter
 
+        moviesViewModel.movies.observe(viewLifecycleOwner, Observer {
+            it?.let { movies ->
+                moviesAdapter.submitList(movies)
             }
         })
     }

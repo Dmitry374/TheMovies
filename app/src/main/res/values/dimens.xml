@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="margin">16dp</dimen>
+    <dimen name="small_margin">8dp</dimen>
+    <dimen name="padding">16dp</dimen>
+
+    <dimen name="main_page_title_text_size">24sp</dimen>
+
+    <dimen name="image_move_banner_width">143dp</dimen>
+    <dimen name="image_move_banner_height">214dp</dimen>
+
+    <dimen name="padding_vote_average_compound_drawable">5dp</dimen>
+
+    <dimen name="movie_title_text_size">20sp</dimen>
+    <dimen name="movie_vote_average_text_size">18sp</dimen>
+</resources>
