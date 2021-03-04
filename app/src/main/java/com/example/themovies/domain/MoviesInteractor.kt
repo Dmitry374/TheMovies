@@ -1,4 +1,18 @@
 package com.example.themovies.domain
 
-class MoviesInteractor {
+import com.example.themovies.model.domain.Movie
+import com.example.themovies.repository.MovieRepository
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
+
+class MoviesInteractor(
+    private val movieRepository: MovieRepository
+) {
+
+    fun loadPopularMovies(): Single<List<Movie>> {
+        return movieRepository.loadPopularMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

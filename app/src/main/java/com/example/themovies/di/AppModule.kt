@@ -2,8 +2,10 @@ package com.example.themovies.di
 
 import com.example.themovies.BuildConfig
 import com.example.themovies.common.Constants
+import com.example.themovies.common.DataMapper
 import com.example.themovies.domain.MoviesInteractor
 import com.example.themovies.network.ApiService
+import com.example.themovies.repository.MovieRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -67,7 +69,22 @@ class AppModule {
 
     @Singleton
     @Provides
-    fun provideMoviesInteractor(): MoviesInteractor {
-        return MoviesInteractor()
+    fun provideDataMapper(): DataMapper {
+        return DataMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieRepository(
+        apiService: ApiService,
+        dataMapper: DataMapper
+    ): MovieRepository {
+        return MovieRepository(apiService, dataMapper)
+    }
+
+    @Singleton
+    @Provides
+    fun provideMoviesInteractor(movieRepository: MovieRepository): MoviesInteractor {
+        return MoviesInteractor(movieRepository)
     }
 }
