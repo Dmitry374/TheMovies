@@ -56,9 +56,9 @@ class MoviesAdapter(private val clickMovieListener: (Movie) -> Unit) :
     class MovieViewHolder(
         itemView: View,
         private val onMovieClick: (Int) -> Unit
-    ) : RecyclerView.ViewHolder(itemView) {
+    ) : BaseMovieViewHolder(itemView) {
 
-        fun bind(movie: Movie) {
+        override fun bind(movie: Movie) {
 
             itemView.setOnClickListener { onMovieClick(absoluteAdapterPosition) }
 

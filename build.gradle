@@ -33,6 +33,7 @@ ext {
     navigation_fragment_version = "2.3.3"
     constraint_layout_version = "2.0.4"
     recyclerview_version = "1.2.0-beta02"
+    flexbox_layout_version = "2.0.1"
     gson_version = "2.8.6"
     glide_version = "4.11.0"
     rxjava_version = "2.2.20"

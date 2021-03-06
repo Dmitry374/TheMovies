@@ -16,6 +16,9 @@ import com.example.themovies.App
 import com.example.themovies.R
 import com.example.themovies.ui.movies.adapter.MoviesAdapter
 import com.example.themovies.ui.movies.adapter.SearchMoviesAdapter
+import com.google.android.flexbox.FlexDirection
+import com.google.android.flexbox.FlexWrap
+import com.google.android.flexbox.FlexboxLayoutManager
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -70,10 +73,18 @@ class MoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                showSearchResultMovies(true)
                 moviesViewModel.searsNewMovie(newText)
                 return true
             }
+        })
+
+        searchViewMovies.setOnQueryTextFocusChangeListener(object : View.OnFocusChangeListener {
+            override fun onFocusChange(v: View?, hasFocus: Boolean) {
+                if (hasFocus) {
+                    showSearchResultMovies(true)
+                }
+            }
+
         })
 
         searchViewMovies.setOnCloseListener {
@@ -90,10 +101,11 @@ class MoviesFragment : Fragment() {
             }
         })
 
-//        popular movies
+        val layoutManager = FlexboxLayoutManager(context)
+        layoutManager.flexDirection = FlexDirection.ROW
+        layoutManager.flexWrap = FlexWrap.NOWRAP
 
-        recyclerPopularMovies.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        recyclerPopularMovies.layoutManager = layoutManager
         recyclerPopularMovies.adapter = popularMoviesAdapter
 
         moviesViewModel.popularMovies.observe(viewLifecycleOwner, Observer {
@@ -105,8 +117,11 @@ class MoviesFragment : Fragment() {
 
 //        now playing movies
 
-        recyclerNowPlayingMovies.layoutManager =
-            LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false)
+        val layoutManagerNowPlaying = FlexboxLayoutManager(context)
+        layoutManagerNowPlaying.flexDirection = FlexDirection.ROW
+        layoutManagerNowPlaying.flexWrap = FlexWrap.NOWRAP
+
+        recyclerNowPlayingMovies.layoutManager = layoutManagerNowPlaying
         recyclerNowPlayingMovies.adapter = nowPlayingMoviesAdapter
 
         moviesViewModel.nowPlayingMovies.observe(viewLifecycleOwner, Observer {

@@ -55,6 +55,7 @@ dependencies {
 
     // RecyclerView
     implementation "androidx.recyclerview:recyclerview:$recyclerview_version"
+    implementation "com.google.android:flexbox:$flexbox_layout_version"
 
     // Gson
     implementation "com.google.code.gson:gson:$gson_version"
