@@ -35,4 +35,14 @@ class MoviesInteractor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    /**
+     * DB
+     */
+
+    fun getPopularMovies(): Single<List<Movie>> {
+        return movieRepository.getPopularMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

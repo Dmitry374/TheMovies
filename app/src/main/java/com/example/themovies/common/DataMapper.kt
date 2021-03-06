@@ -1,6 +1,7 @@
 package com.example.themovies.common
 
 import com.example.themovies.model.domain.Movie
+import com.example.themovies.model.entity.MovieEntity
 import com.example.themovies.model.entity.PopularMovieEntity
 import com.example.themovies.model.net.MovieResult
 
@@ -19,7 +20,6 @@ class DataMapper {
     private fun MovieResult.toMovieDomain() = Movie(
         adult = this.adult,
         backdropPath = this.backdropPath,
-        genreIds = this.genreIds,
         id = this.id,
         originalLanguage = this.originalLanguage,
         originalTitle = this.originalTitle,
@@ -46,6 +46,31 @@ class DataMapper {
         id = this.id,
         adult = this.adult,
         backdropPath = this.backdropPath,
+        originalLanguage = this.originalLanguage,
+        originalTitle = this.originalTitle,
+        overview = this.overview,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate,
+        title = this.title,
+        video = this.video,
+        voteAverage = this.voteAverage,
+        voteCount = this.voteCount
+    )
+
+    /**
+     * MovieEntity list to Movie list
+     */
+
+    fun listMoviesEntitiesToMovieList(movies: List<MovieEntity>): List<Movie> {
+        return movies.toMoviesList()
+    }
+
+    private fun List<MovieEntity>.toMoviesList() = this.map { it.toMovie() }
+
+    private fun MovieEntity.toMovie() = Movie(
+        adult = this.adult,
+        backdropPath = this.backdropPath,
+        id = this.id,
         originalLanguage = this.originalLanguage,
         originalTitle = this.originalTitle,
         overview = this.overview,
