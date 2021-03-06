@@ -70,13 +70,19 @@ class MoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                showSearchResultMovies(true)
                 moviesViewModel.searsNewMovie(newText)
                 return true
             }
         })
 
+        searchViewMovies.setOnQueryTextFocusChangeListener { view, hasFocus ->
+            if (hasFocus) {
+                showSearchResultMovies(true)
+            }
+        }
+
         searchViewMovies.setOnCloseListener {
+            searchViewMoviesClearFocus()
             showSearchResultMovies(false)
             true
         }
@@ -127,5 +133,11 @@ class MoviesFragment : Fragment() {
         recyclerPopularMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
         titleNowPlayingMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
         recyclerNowPlayingMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
+    }
+
+    private fun searchViewMoviesClearFocus() {
+        searchViewMovies.setQuery("", false)
+        searchViewMovies.clearFocus()
+        searchViewMovies.onActionViewCollapsed()
     }
 }

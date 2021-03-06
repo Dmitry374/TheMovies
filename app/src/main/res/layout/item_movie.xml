@@ -12,6 +12,7 @@
         android:id="@+id/imageMovieBanner"
         android:layout_width="@dimen/image_move_banner_width"
         android:layout_height="@dimen/image_move_banner_height"
+        android:contentDescription="@string/app_name"
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
@@ -19,6 +20,10 @@
         android:layout_width="@dimen/image_move_banner_width"
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/small_margin"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:scrollHorizontally="true"
+        android:singleLine="false"
         android:textColor="@color/black"
         android:textSize="@dimen/movie_title_text_size"
         tools:text="Spider-Man" />
