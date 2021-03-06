@@ -45,8 +45,19 @@ class MovieRepository(
         movieDao.insertPopularMovies(dataMapper.listMoviesToMovieEntitiesList(movies))
     }
 
+    fun insertNowPlayingMovies(movies: List<Movie>) {
+        movieDao.insertNowPlayingMovies(dataMapper.listMoviesToNowPlayingMovieEntitiesList(movies))
+    }
+
     fun getPopularMovies(): Single<List<Movie>> {
         return movieDao.getPopularMovies()
+            .map { popularMoviesEntities ->
+                dataMapper.listMoviesEntitiesToMovieList(popularMoviesEntities)
+            }
+    }
+
+    fun getNowPlayingMovies(): Single<List<Movie>> {
+        return movieDao.getNowPlayingMovies()
             .map { popularMoviesEntities ->
                 dataMapper.listMoviesEntitiesToMovieList(popularMoviesEntities)
             }

@@ -48,7 +48,7 @@ class MoviesViewModel @Inject constructor(
     init {
         searchMovies()
         getPopularMoviesFromDB()
-        loadNowPlayingMovies()
+        getNowPlayingMoviesFromDB()
     }
 
     fun completeSearch() {
@@ -87,6 +87,19 @@ class MoviesViewModel @Inject constructor(
                     loadPopularMovies()
                 }, {
                     _popularMoviesNetError.value = it
+                })
+        )
+    }
+
+    private fun getNowPlayingMoviesFromDB() {
+        compositeDisposable.add(
+            moviesInteractor.getNowPlayingMovies()
+                .subscribe({ movies ->
+                    _nowPlayingMovies.value = movies
+
+                    loadNowPlayingMovies()
+                }, {
+                    _nowPlayingMoviesNetError.value = it
                 })
         )
     }

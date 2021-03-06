@@ -27,6 +27,10 @@ class MoviesInteractor(
     fun loadNowPlayingMovies(): Single<List<Movie>> {
         return movieRepository.loadNowPlayingMovies()
             .subscribeOn(Schedulers.io())
+            .map { movies ->
+                movieRepository.insertNowPlayingMovies(movies)
+                movies
+            }
             .observeOn(AndroidSchedulers.mainThread())
     }
 
@@ -42,6 +46,12 @@ class MoviesInteractor(
 
     fun getPopularMovies(): Single<List<Movie>> {
         return movieRepository.getPopularMovies()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    fun getNowPlayingMovies(): Single<List<Movie>> {
+        return movieRepository.getNowPlayingMovies()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
