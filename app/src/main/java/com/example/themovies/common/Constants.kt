@@ -8,4 +8,6 @@ object Constants {
     const val ARG_REGION = "ru"
 
     const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+
+    const val DATABASE_NAME = "movie_database.db"
 }

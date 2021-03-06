@@ -2,6 +2,7 @@ package com.example.themovies
 
 import android.app.Application
 import com.example.themovies.di.AppComponent
+import com.example.themovies.di.AppModule
 import com.example.themovies.di.DaggerAppComponent
 
 class App : Application() {
@@ -12,6 +13,7 @@ class App : Application() {
         super.onCreate()
 
         appComponent = DaggerAppComponent.builder()
+            .appModule(AppModule(this))
             .build()
     }
 }

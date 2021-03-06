@@ -1,8 +1,12 @@
 package com.example.themovies.di
 
+import android.content.Context
+import androidx.room.Room
 import com.example.themovies.BuildConfig
 import com.example.themovies.common.Constants
 import com.example.themovies.common.DataMapper
+import com.example.themovies.database.MovieDao
+import com.example.themovies.database.MovieDatabase
 import com.example.themovies.domain.MoviesInteractor
 import com.example.themovies.network.ApiService
 import com.example.themovies.repository.MovieRepository
@@ -18,7 +22,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class AppModule {
+class AppModule(private val context: Context) {
+
+    @Singleton
+    @Provides
+    fun provideContext(): Context {
+        return context
+    }
 
     @Singleton
     @Provides
@@ -69,6 +79,24 @@ class AppModule {
 
     @Singleton
     @Provides
+    fun provideDb(context: Context): MovieDatabase {
+        return Room.databaseBuilder(
+            context.applicationContext,
+            MovieDatabase::class.java,
+            Constants.DATABASE_NAME
+        )
+            .fallbackToDestructiveMigration()
+            .build()
+    }
+
+    @Singleton
+    @Provides
+    fun provideMovieDao(db: MovieDatabase): MovieDao {
+        return db.movieDao()
+    }
+
+    @Singleton
+    @Provides
     fun provideDataMapper(): DataMapper {
         return DataMapper()
     }
@@ -77,9 +105,10 @@ class AppModule {
     @Provides
     fun provideMovieRepository(
         apiService: ApiService,
+        movieDao: MovieDao,
         dataMapper: DataMapper
     ): MovieRepository {
-        return MovieRepository(apiService, dataMapper)
+        return MovieRepository(apiService, movieDao, dataMapper)
     }
 
     @Singleton

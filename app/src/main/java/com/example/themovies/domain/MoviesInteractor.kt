@@ -10,9 +10,17 @@ class MoviesInteractor(
     private val movieRepository: MovieRepository
 ) {
 
+    /**
+     * Web
+     */
+
     fun loadPopularMovies(): Single<List<Movie>> {
         return movieRepository.loadPopularMovies()
             .subscribeOn(Schedulers.io())
+            .map { movies ->
+                movieRepository.insertPopularMovies(movies)
+                movies
+            }
             .observeOn(AndroidSchedulers.mainThread())
     }
 
