@@ -16,6 +16,7 @@ import com.example.themovies.App
 import com.example.themovies.R
 import com.example.themovies.ui.movies.adapter.MoviesAdapter
 import com.example.themovies.ui.movies.adapter.SearchMoviesAdapter
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -29,15 +30,18 @@ class MoviesFragment : Fragment() {
     }
 
     private val popularMoviesAdapter = MoviesAdapter { movie ->
-
+        Snackbar.make(moviesLayout, movie.title, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private val nowPlayingMoviesAdapter = MoviesAdapter { movie ->
-
+        Snackbar.make(moviesLayout, movie.title, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private val searchMoviesAdapter = SearchMoviesAdapter { movie ->
-
+        Snackbar.make(moviesLayout, movie.title, Snackbar.LENGTH_SHORT)
+            .show()
     }
 
     private val inputMethodManager: InputMethodManager by lazy {
@@ -75,7 +79,7 @@ class MoviesFragment : Fragment() {
             }
         })
 
-        searchViewMovies.setOnQueryTextFocusChangeListener { view, hasFocus ->
+        searchViewMovies.setOnQueryTextFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
                 showSearchResultMovies(true)
             }
@@ -136,6 +140,7 @@ class MoviesFragment : Fragment() {
     }
 
     private fun searchViewMoviesClearFocus() {
+        searchMoviesAdapter.submitList(listOf())
         searchViewMovies.setQuery("", false)
         searchViewMovies.clearFocus()
         searchViewMovies.onActionViewCollapsed()
