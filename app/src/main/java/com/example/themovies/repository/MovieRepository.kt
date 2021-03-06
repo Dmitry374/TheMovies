@@ -24,4 +24,11 @@ class MovieRepository(
             }
     }
 
+    fun searchMovies(query: String): Single<List<Movie>> {
+        return apiService.searchMovies(query)
+            .map { movieResponse ->
+                dataMapper.listMoviesResultToMovieDomain(movieResponse.results)
+            }
+    }
+
 }

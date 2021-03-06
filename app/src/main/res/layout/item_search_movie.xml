@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:padding="@dimen/padding">
+
+    <ImageView
+        android:id="@+id/imagePosterSearchMovie"
+        android:layout_width="@dimen/image_search_move_banner_width"
+        android:layout_height="@dimen/image_search_move_banner_height"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <TextView
+        android:id="@+id/movieSearchTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:textColor="@color/black"
+        android:textSize="@dimen/movie_search_title_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/movieSearchOriginalTitle"
+        app:layout_constraintEnd_toStartOf="@+id/movieSearchRating"
+        app:layout_constraintLeft_toRightOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintStart_toEndOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintTop_toTopOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Spider-Man" />
+
+    <TextView
+        android:id="@+id/movieSearchOriginalTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin"
+        android:layout_marginEnd="@dimen/margin"
+        android:textSize="@dimen/movie_search_original_title_text_size"
+        app:layout_constraintBottom_toBottomOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintEnd_toStartOf="@+id/movieSearchRating"
+        app:layout_constraintLeft_toRightOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintStart_toEndOf="@+id/imagePosterSearchMovie"
+        app:layout_constraintTop_toBottomOf="@id/movieSearchTitle"
+        tools:text="Spider-Man" />
+
+    <TextView
+        android:id="@+id/movieSearchRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/green"
+        android:textSize="@dimen/movie_search_rating_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="7.5" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

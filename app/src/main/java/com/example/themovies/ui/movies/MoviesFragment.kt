@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.themovies.App
 import com.example.themovies.R
 import com.example.themovies.ui.movies.adapter.MoviesAdapter
+import com.example.themovies.ui.movies.adapter.SearchMoviesAdapter
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
 
@@ -33,6 +36,14 @@ class MoviesFragment : Fragment() {
 
     }
 
+    private val searchMoviesAdapter = SearchMoviesAdapter { movie ->
+
+    }
+
+    private val inputMethodManager: InputMethodManager by lazy {
+        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -50,6 +61,34 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+//        search
+
+        searchViewMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                moviesViewModel.completeSearch()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String): Boolean {
+                showSearchResultMovies(true)
+                moviesViewModel.searsNewMovie(newText)
+                return true
+            }
+        })
+
+        searchViewMovies.setOnCloseListener {
+            showSearchResultMovies(false)
+            true
+        }
+
+        recyclerSearchMovies.layoutManager = LinearLayoutManager(activity)
+        recyclerSearchMovies.adapter = searchMoviesAdapter
+
+        moviesViewModel.searchMovies.observe(viewLifecycleOwner, Observer {
+            it?.let { movies ->
+                searchMoviesAdapter.submitList(movies)
+            }
+        })
 
 //        popular movies
 
@@ -75,5 +114,18 @@ class MoviesFragment : Fragment() {
                 nowPlayingMoviesAdapter.submitList(movies)
             }
         })
+    }
+
+    private fun showSearchResultMovies(isShowSearchResult: Boolean) {
+
+        if (!isShowSearchResult) {
+            inputMethodManager.hideSoftInputFromWindow(view?.windowToken, 0)
+        }
+
+        recyclerSearchMovies.visibility = if (isShowSearchResult) View.VISIBLE else View.GONE
+        titlePopularMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
+        recyclerPopularMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
+        titleNowPlayingMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
+        recyclerNowPlayingMovies.visibility = if (isShowSearchResult) View.GONE else View.VISIBLE
     }
 }

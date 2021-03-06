@@ -13,8 +13,8 @@ import com.example.themovies.R
 import com.example.themovies.common.Constants
 import com.example.themovies.model.domain.Movie
 
-class MoviesAdapter(private val clickMovieListener: (Movie) -> Unit) :
-    RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>() {
+class SearchMoviesAdapter(private val clickMovieListener: (Movie) -> Unit) :
+    RecyclerView.Adapter<SearchMoviesAdapter.MovieViewHolder>() {
 
     private val differ = AsyncListDiffer(this, DIFF_CALLBACK)
 
@@ -29,7 +29,7 @@ class MoviesAdapter(private val clickMovieListener: (Movie) -> Unit) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_movie, parent, false)
+                .inflate(R.layout.item_search_movie, parent, false)
         ) { position ->
             clickMovieListener(differ.currentList[position])
         }
@@ -62,17 +62,20 @@ class MoviesAdapter(private val clickMovieListener: (Movie) -> Unit) :
 
             itemView.setOnClickListener { onMovieClick(absoluteAdapterPosition) }
 
-            val imageMovieBanner = itemView.findViewById<ImageView>(R.id.imageMovieBanner)
+            val imageMovieBanner = itemView.findViewById<ImageView>(R.id.imagePosterSearchMovie)
 
             Glide.with(imageMovieBanner)
                 .load(Constants.IMAGE_BASE_URL + movie.posterPath)
                 .thumbnail(0.5f)
                 .into(imageMovieBanner)
 
-            itemView.findViewById<TextView>(R.id.movieTitle).text = movie.title
+            itemView.findViewById<TextView>(R.id.movieSearchTitle).text = movie.title
 
-            itemView.findViewById<TextView>(R.id.movieVoteAverage).text =
-                movie.voteAverage.toString()
+            itemView.findViewById<TextView>(R.id.movieSearchOriginalTitle).text =
+                movie.originalTitle
+
+            itemView.findViewById<TextView>(R.id.movieSearchRating).text =
+                if (movie.voteAverage > 0) movie.voteAverage.toString() else ""
         }
 
     }

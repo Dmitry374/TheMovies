@@ -21,4 +21,10 @@ class MoviesInteractor(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
     }
+
+    fun searchMovies(query: String): Single<List<Movie>> {
+        return movieRepository.searchMovies(query)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+    }
 }

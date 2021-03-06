@@ -13,4 +13,11 @@
 
     <dimen name="movie_title_text_size">20sp</dimen>
     <dimen name="movie_vote_average_text_size">18sp</dimen>
+
+    <dimen name="image_search_move_banner_width">71dp</dimen>
+    <dimen name="image_search_move_banner_height">107dp</dimen>
+
+    <dimen name="movie_search_title_text_size">18sp</dimen>
+    <dimen name="movie_search_original_title_text_size">14sp</dimen>
+    <dimen name="movie_search_rating_text_size">18sp</dimen>
 </resources>
