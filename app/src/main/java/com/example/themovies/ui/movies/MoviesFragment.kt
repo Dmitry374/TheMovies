@@ -34,6 +34,7 @@ class MoviesFragment : Fragment() {
     }
 
     private var isNetworkAvailable = true
+    private var isSearchError = false
 
     private val popularMoviesAdapter = MoviesAdapter { movie ->
         Snackbar.make(moviesLayout, movie.title, Snackbar.LENGTH_SHORT)
@@ -57,6 +58,8 @@ class MoviesFragment : Fragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
+        registerNetworkCallback()
+
         (requireActivity().application as App).appComponent.inject(this)
     }
 
@@ -71,8 +74,6 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        registerNetworkCallback()
-
         if (savedInstanceState == null) {
             moviesViewModel.searchMovies()
             moviesViewModel.getPopularMoviesFromDB()
@@ -83,6 +84,9 @@ class MoviesFragment : Fragment() {
 
         searchViewMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
+                if (isSearchError) {
+                    moviesViewModel.searchMovies()
+                }
                 if (isNetworkAvailable) {
                     moviesViewModel.searsNewMovie(query)
                 }
@@ -90,6 +94,9 @@ class MoviesFragment : Fragment() {
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
+                if (isSearchError) {
+                    moviesViewModel.searchMovies()
+                }
                 if (isNetworkAvailable) {
                     moviesViewModel.searsNewMovie(newText)
                 }
@@ -148,6 +155,7 @@ class MoviesFragment : Fragment() {
         moviesViewModel.searchMoviesNetError.observe(
             viewLifecycleOwner,
             EventObserver { isErrorLoading ->
+                isSearchError = true
                 if (isErrorLoading) {
                     Snackbar.make(
                         moviesLayout,
