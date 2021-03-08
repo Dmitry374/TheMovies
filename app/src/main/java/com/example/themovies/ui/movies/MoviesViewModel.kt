@@ -23,17 +23,27 @@ class MoviesViewModel @Inject constructor(
     val popularMovies: LiveData<List<Movie>>
         get() = _popularMovies
 
+    private val _popularMoviesNetError by lazy { MutableLiveData<Boolean>() }
+    val popularMoviesNetError: LiveData<Boolean>
+        get() = _popularMoviesNetError
+
+
     private val _nowPlayingMovies by lazy { MutableLiveData<List<Movie>>() }
     val nowPlayingMovies: LiveData<List<Movie>>
         get() = _nowPlayingMovies
+
+    private val _nowPlayingMoviesNetError by lazy { MutableLiveData<Boolean>() }
+    val nowPlayingMoviesNetError: LiveData<Boolean>
+        get() = _nowPlayingMoviesNetError
+
 
     private val _searchMovies by lazy { MutableLiveData<List<Movie>>() }
     val searchMovies: LiveData<List<Movie>>
         get() = _searchMovies
 
-    private val _isDataLoadingError by lazy { MutableLiveData<Boolean>() }
-    val isDataLoadingError: LiveData<Boolean>
-        get() = _isDataLoadingError
+    private val _searchMoviesNetError by lazy { MutableLiveData<Boolean>() }
+    val searchMoviesNetError: LiveData<Boolean>
+        get() = _searchMoviesNetError
 
     fun completeSearch() {
         searchSubject.onComplete()
@@ -56,9 +66,9 @@ class MoviesViewModel @Inject constructor(
             .subscribe({ movies ->
                 _searchMovies.value = movies
 
-                _isDataLoadingError.value = false
+                _searchMoviesNetError.value = false
             }, {
-                _isDataLoadingError.value = true
+                _searchMoviesNetError.value = true
             })
 
         compositeDisposable.add(searchMovieDisposable)
@@ -91,9 +101,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadPopularMovies()
                 .subscribe({ movies ->
                     _popularMovies.value = movies
-                    _isDataLoadingError.value = false
+                    _popularMoviesNetError.value = false
                 }, {
-                    _isDataLoadingError.value = true
+                    _popularMoviesNetError.value = true
                 })
         )
     }
@@ -103,9 +113,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadNowPlayingMovies()
                 .subscribe({ movies ->
                     _nowPlayingMovies.value = movies
-                    _isDataLoadingError.value = false
+                    _nowPlayingMoviesNetError.value = false
                 }, {
-                    _isDataLoadingError.value = true
+                    _nowPlayingMoviesNetError.value = true
                 })
         )
     }

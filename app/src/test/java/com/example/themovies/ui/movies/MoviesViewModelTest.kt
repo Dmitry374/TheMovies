@@ -5,6 +5,8 @@ import com.example.themovies.LiveDataTestUtil
 import com.example.themovies.domain.MoviesInteractor
 import com.example.themovies.model.domain.Movie
 import io.reactivex.Single
+import io.reactivex.android.plugins.RxAndroidPlugins
+import io.reactivex.schedulers.Schedulers
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
@@ -25,9 +27,15 @@ class MoviesViewModelTest {
     private lateinit var moviesViewModel: MoviesViewModel
     private lateinit var movies: List<Movie>
 
+    companion object {
+        const val SEARCH_QUERY = "abc"
+    }
+
     @Before
     fun setUpMoviesViewModel() {
         MockitoAnnotations.initMocks(this)
+
+        RxAndroidPlugins.setInitMainThreadSchedulerHandler { Schedulers.trampoline() }
 
         // Get a reference to the class under test
         moviesViewModel = MoviesViewModel(moviesInteractor)
@@ -94,8 +102,45 @@ class MoviesViewModelTest {
 
         verify<MoviesInteractor>(moviesInteractor).loadPopularMovies()
 
+        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.popularMoviesNetError))
+
         // Data loaded
         Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.popularMovies).isEmpty())
         Assert.assertTrue(LiveDataTestUtil.getValue(moviesViewModel.popularMovies).size == 3)
+    }
+
+    @Test
+    fun getNowPlayingMoviesFromDB_dataLoaded() {
+
+        `when`(moviesInteractor.getNowPlayingMovies()).thenReturn(Single.just(movies))
+
+        `when`(moviesInteractor.loadNowPlayingMovies()).thenReturn(Single.just(movies))
+
+        moviesViewModel.getNowPlayingMoviesFromDB()
+
+        verify<MoviesInteractor>(moviesInteractor).getNowPlayingMovies()
+
+        verify<MoviesInteractor>(moviesInteractor).loadNowPlayingMovies()
+
+        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMoviesNetError))
+
+        // Data loaded
+        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMovies).isEmpty())
+        Assert.assertTrue(LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMovies).size == 3)
+    }
+
+    @Test
+    fun searchMovies_dataLoaded() {
+        `when`(moviesInteractor.searchMovies(SEARCH_QUERY)).thenReturn(Single.just(movies))
+
+        moviesViewModel.searchMovies()
+
+        moviesViewModel.searsNewMovie(SEARCH_QUERY)
+
+        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.searchMoviesNetError))
+
+        // Data loaded
+        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.searchMovies).isEmpty())
+        Assert.assertTrue(LiveDataTestUtil.getValue(moviesViewModel.searchMovies).size == 3)
     }
 }

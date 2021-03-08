@@ -4,5 +4,7 @@
     <string name="popular_movies">Популярное</string>
     <string name="now_playing_movies">Новинки</string>
 
-    <string name="error_data_loading">Error data loading. Check the internet connection</string>
+    <string name="search_error_data_loading">Search error</string>
+    <string name="popular_movies_error_data_loading">Error loading popular movies</string>
+    <string name="now_playing_movies_error_data_loading">Error loading now playing movies</string>
 </resources>

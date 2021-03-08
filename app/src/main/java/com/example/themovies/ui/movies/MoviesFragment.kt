@@ -133,10 +133,28 @@ class MoviesFragment : Fragment() {
 
 //        Error loading data
 
-        moviesViewModel.isDataLoadingError.observe(viewLifecycleOwner, Observer {
+        moviesViewModel.searchMoviesNetError.observe(viewLifecycleOwner, Observer {
             it?.let { isErrorLoading ->
                 if (isErrorLoading) {
-                    Snackbar.make(moviesLayout, R.string.error_data_loading, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(moviesLayout, R.string.search_error_data_loading, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+
+        moviesViewModel.popularMoviesNetError.observe(viewLifecycleOwner, Observer {
+            it?.let { isErrorLoading ->
+                if (isErrorLoading) {
+                    Snackbar.make(moviesLayout, R.string.popular_movies_error_data_loading, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
+
+        moviesViewModel.nowPlayingMoviesNetError.observe(viewLifecycleOwner, Observer {
+            it?.let { isErrorLoading ->
+                if (isErrorLoading) {
+                    Snackbar.make(moviesLayout, R.string.now_playing_movies_error_data_loading, Snackbar.LENGTH_SHORT)
                         .show()
                 }
             }
