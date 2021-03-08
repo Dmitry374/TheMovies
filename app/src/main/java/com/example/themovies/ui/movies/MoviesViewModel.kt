@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.themovies.domain.MoviesInteractor
 import com.example.themovies.model.domain.Movie
+import com.example.themovies.utils.Event
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.subjects.PublishSubject
@@ -23,8 +24,8 @@ class MoviesViewModel @Inject constructor(
     val popularMovies: LiveData<List<Movie>>
         get() = _popularMovies
 
-    private val _popularMoviesNetError by lazy { MutableLiveData<Boolean>() }
-    val popularMoviesNetError: LiveData<Boolean>
+    private val _popularMoviesNetError by lazy { MutableLiveData<Event<Boolean>>() }
+    val popularMoviesNetError: LiveData<Event<Boolean>>
         get() = _popularMoviesNetError
 
 
@@ -32,8 +33,8 @@ class MoviesViewModel @Inject constructor(
     val nowPlayingMovies: LiveData<List<Movie>>
         get() = _nowPlayingMovies
 
-    private val _nowPlayingMoviesNetError by lazy { MutableLiveData<Boolean>() }
-    val nowPlayingMoviesNetError: LiveData<Boolean>
+    private val _nowPlayingMoviesNetError by lazy { MutableLiveData<Event<Boolean>>() }
+    val nowPlayingMoviesNetError: LiveData<Event<Boolean>>
         get() = _nowPlayingMoviesNetError
 
 
@@ -41,8 +42,8 @@ class MoviesViewModel @Inject constructor(
     val searchMovies: LiveData<List<Movie>>
         get() = _searchMovies
 
-    private val _searchMoviesNetError by lazy { MutableLiveData<Boolean>() }
-    val searchMoviesNetError: LiveData<Boolean>
+    private val _searchMoviesNetError by lazy { MutableLiveData<Event<Boolean>>() }
+    val searchMoviesNetError: LiveData<Event<Boolean>>
         get() = _searchMoviesNetError
 
     fun searsNewMovie(newText: String) {
@@ -62,9 +63,9 @@ class MoviesViewModel @Inject constructor(
             .subscribe({ movies ->
                 _searchMovies.value = movies
 
-                _searchMoviesNetError.value = false
+                _searchMoviesNetError.value = Event(false)
             }, {
-                _searchMoviesNetError.value = true
+                _searchMoviesNetError.value = Event(true)
             })
 
         compositeDisposable.add(searchMovieDisposable)
@@ -97,9 +98,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadPopularMovies()
                 .subscribe({ movies ->
                     _popularMovies.value = movies
-                    _popularMoviesNetError.value = false
+                    _popularMoviesNetError.value = Event(false)
                 }, {
-                    _popularMoviesNetError.value = true
+                    _popularMoviesNetError.value = Event(true)
                 })
         )
     }
@@ -109,9 +110,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadNowPlayingMovies()
                 .subscribe({ movies ->
                     _nowPlayingMovies.value = movies
-                    _nowPlayingMoviesNetError.value = false
+                    _nowPlayingMoviesNetError.value = Event(false)
                 }, {
-                    _nowPlayingMoviesNetError.value = true
+                    _nowPlayingMoviesNetError.value = Event(true)
                 })
         )
     }

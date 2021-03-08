@@ -19,6 +19,7 @@ import com.example.themovies.App
 import com.example.themovies.R
 import com.example.themovies.ui.movies.adapter.MoviesAdapter
 import com.example.themovies.ui.movies.adapter.SearchMoviesAdapter
+import com.example.themovies.utils.EventObserver
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_movies.*
 import javax.inject.Inject
@@ -144,8 +145,9 @@ class MoviesFragment : Fragment() {
 
 //        Error loading data
 
-        moviesViewModel.searchMoviesNetError.observe(viewLifecycleOwner, Observer {
-            it?.let { isErrorLoading ->
+        moviesViewModel.searchMoviesNetError.observe(
+            viewLifecycleOwner,
+            EventObserver { isErrorLoading ->
                 if (isErrorLoading) {
                     Snackbar.make(
                         moviesLayout,
@@ -154,11 +156,12 @@ class MoviesFragment : Fragment() {
                     )
                         .show()
                 }
-            }
-        })
 
-        moviesViewModel.popularMoviesNetError.observe(viewLifecycleOwner, Observer {
-            it?.let { isErrorLoading ->
+            })
+
+        moviesViewModel.popularMoviesNetError.observe(
+            viewLifecycleOwner,
+            EventObserver { isErrorLoading ->
                 if (isErrorLoading) {
                     Snackbar.make(
                         moviesLayout,
@@ -167,11 +170,11 @@ class MoviesFragment : Fragment() {
                     )
                         .show()
                 }
-            }
-        })
+            })
 
-        moviesViewModel.nowPlayingMoviesNetError.observe(viewLifecycleOwner, Observer {
-            it?.let { isErrorLoading ->
+        moviesViewModel.nowPlayingMoviesNetError.observe(
+            viewLifecycleOwner,
+            EventObserver { isErrorLoading ->
                 if (isErrorLoading) {
                     Snackbar.make(
                         moviesLayout,
@@ -180,8 +183,7 @@ class MoviesFragment : Fragment() {
                     )
                         .show()
                 }
-            }
-        })
+            })
     }
 
     private fun showSearchResultMovies(isShowSearchResult: Boolean) {

@@ -102,7 +102,9 @@ class MoviesViewModelTest {
 
         verify<MoviesInteractor>(moviesInteractor).loadPopularMovies()
 
-        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.popularMoviesNetError))
+        Assert.assertFalse(
+            LiveDataTestUtil.getValue(moviesViewModel.popularMoviesNetError).peekContent()
+        )
 
         // Data loaded
         Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.popularMovies).isEmpty())
@@ -122,7 +124,9 @@ class MoviesViewModelTest {
 
         verify<MoviesInteractor>(moviesInteractor).loadNowPlayingMovies()
 
-        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMoviesNetError))
+        Assert.assertFalse(
+            LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMoviesNetError).peekContent()
+        )
 
         // Data loaded
         Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.nowPlayingMovies).isEmpty())
@@ -137,7 +141,9 @@ class MoviesViewModelTest {
 
         moviesViewModel.searsNewMovie(SEARCH_QUERY)
 
-        Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.searchMoviesNetError))
+        Assert.assertFalse(
+            LiveDataTestUtil.getValue(moviesViewModel.searchMoviesNetError).peekContent()
+        )
 
         // Data loaded
         Assert.assertFalse(LiveDataTestUtil.getValue(moviesViewModel.searchMovies).isEmpty())
