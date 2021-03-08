@@ -65,6 +65,12 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        if (savedInstanceState == null) {
+            moviesViewModel.searchMovies()
+            moviesViewModel.getPopularMoviesFromDB()
+            moviesViewModel.getNowPlayingMoviesFromDB()
+        }
+
 //        search
 
         searchViewMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {

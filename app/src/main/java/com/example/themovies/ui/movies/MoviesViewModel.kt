@@ -45,12 +45,6 @@ class MoviesViewModel @Inject constructor(
     val searchMoviesNetError: LiveData<Throwable>
         get() = _searchMoviesNetError
 
-    init {
-        searchMovies()
-        getPopularMoviesFromDB()
-        getNowPlayingMoviesFromDB()
-    }
-
     fun completeSearch() {
         searchSubject.onComplete()
     }
@@ -59,7 +53,7 @@ class MoviesViewModel @Inject constructor(
         searchSubject.onNext(newText)
     }
 
-    private fun searchMovies() {
+    fun searchMovies() {
 
         val searchMovieDisposable = searchSubject
             .filter { it.isNotEmpty() }
@@ -78,7 +72,7 @@ class MoviesViewModel @Inject constructor(
         compositeDisposable.add(searchMovieDisposable)
     }
 
-    private fun getPopularMoviesFromDB() {
+    fun getPopularMoviesFromDB() {
         compositeDisposable.add(
             moviesInteractor.getPopularMovies()
                 .subscribe({ movies ->
@@ -91,7 +85,7 @@ class MoviesViewModel @Inject constructor(
         )
     }
 
-    private fun getNowPlayingMoviesFromDB() {
+    fun getNowPlayingMoviesFromDB() {
         compositeDisposable.add(
             moviesInteractor.getNowPlayingMovies()
                 .subscribe({ movies ->
