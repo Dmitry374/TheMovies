@@ -1,6 +1,9 @@
 package com.example.themovies.ui.movies
 
 import android.content.Context
+import android.net.ConnectivityManager
+import android.net.Network
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +31,8 @@ class MoviesFragment : Fragment() {
     private val moviesViewModel: MoviesViewModel by viewModels {
         viewModelFactory
     }
+
+    private var isNetworkAvailable = true
 
     private val popularMoviesAdapter = MoviesAdapter { movie ->
         Snackbar.make(moviesLayout, movie.title, Snackbar.LENGTH_SHORT)
@@ -65,6 +70,8 @@ class MoviesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
+        registerNetworkCallback()
+
         if (savedInstanceState == null) {
             moviesViewModel.searchMovies()
             moviesViewModel.getPopularMoviesFromDB()
@@ -74,13 +81,17 @@ class MoviesFragment : Fragment() {
 //        search
 
         searchViewMovies.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                moviesViewModel.completeSearch()
+            override fun onQueryTextSubmit(query: String): Boolean {
+                if (isNetworkAvailable) {
+                    moviesViewModel.searsNewMovie(query)
+                }
                 return true
             }
 
             override fun onQueryTextChange(newText: String): Boolean {
-                moviesViewModel.searsNewMovie(newText)
+                if (isNetworkAvailable) {
+                    moviesViewModel.searsNewMovie(newText)
+                }
                 return true
             }
         })
@@ -136,7 +147,11 @@ class MoviesFragment : Fragment() {
         moviesViewModel.searchMoviesNetError.observe(viewLifecycleOwner, Observer {
             it?.let { isErrorLoading ->
                 if (isErrorLoading) {
-                    Snackbar.make(moviesLayout, R.string.search_error_data_loading, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        moviesLayout,
+                        R.string.search_error_data_loading,
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -145,7 +160,11 @@ class MoviesFragment : Fragment() {
         moviesViewModel.popularMoviesNetError.observe(viewLifecycleOwner, Observer {
             it?.let { isErrorLoading ->
                 if (isErrorLoading) {
-                    Snackbar.make(moviesLayout, R.string.popular_movies_error_data_loading, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        moviesLayout,
+                        R.string.popular_movies_error_data_loading,
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -154,7 +173,11 @@ class MoviesFragment : Fragment() {
         moviesViewModel.nowPlayingMoviesNetError.observe(viewLifecycleOwner, Observer {
             it?.let { isErrorLoading ->
                 if (isErrorLoading) {
-                    Snackbar.make(moviesLayout, R.string.now_playing_movies_error_data_loading, Snackbar.LENGTH_SHORT)
+                    Snackbar.make(
+                        moviesLayout,
+                        R.string.now_playing_movies_error_data_loading,
+                        Snackbar.LENGTH_SHORT
+                    )
                         .show()
                 }
             }
@@ -179,5 +202,37 @@ class MoviesFragment : Fragment() {
         searchViewMovies.setQuery("", false)
         searchViewMovies.clearFocus()
         searchViewMovies.onActionViewCollapsed()
+    }
+
+    private fun registerNetworkCallback() {
+        val connectivityManager =
+            activity?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+
+            connectivityManager.registerDefaultNetworkCallback(object :
+                ConnectivityManager.NetworkCallback() {
+                override fun onLost(network: Network) {
+                    isNetworkAvailable = false
+                    Snackbar.make(
+                        moviesLayout,
+                        R.string.lost_internet_connection,
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .show()
+                }
+
+                override fun onAvailable(network: Network) {
+                    if (!isNetworkAvailable) {
+                        Snackbar.make(
+                            moviesLayout,
+                            R.string.internet_connection_available,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                    isNetworkAvailable = true
+                }
+            })
+        }
     }
 }

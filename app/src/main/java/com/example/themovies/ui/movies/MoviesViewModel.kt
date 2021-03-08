@@ -45,10 +45,6 @@ class MoviesViewModel @Inject constructor(
     val searchMoviesNetError: LiveData<Boolean>
         get() = _searchMoviesNetError
 
-    fun completeSearch() {
-        searchSubject.onComplete()
-    }
-
     fun searsNewMovie(newText: String) {
         searchSubject.onNext(newText)
     }
