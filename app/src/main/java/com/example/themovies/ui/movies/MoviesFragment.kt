@@ -213,16 +213,18 @@ class MoviesFragment : Fragment() {
                 ConnectivityManager.NetworkCallback() {
                 override fun onLost(network: Network) {
                     isNetworkAvailable = false
-                    Snackbar.make(
-                        moviesLayout,
-                        R.string.lost_internet_connection,
-                        Snackbar.LENGTH_SHORT
-                    )
-                        .show()
+                    if (isAdded) {
+                        Snackbar.make(
+                            moviesLayout,
+                            R.string.lost_internet_connection,
+                            Snackbar.LENGTH_SHORT
+                        )
+                            .show()
+                    }
                 }
 
                 override fun onAvailable(network: Network) {
-                    if (!isNetworkAvailable) {
+                    if (!isNetworkAvailable && isAdded) {
                         Snackbar.make(
                             moviesLayout,
                             R.string.internet_connection_available,
