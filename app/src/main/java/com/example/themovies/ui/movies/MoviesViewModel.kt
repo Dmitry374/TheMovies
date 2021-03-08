@@ -23,27 +23,17 @@ class MoviesViewModel @Inject constructor(
     val popularMovies: LiveData<List<Movie>>
         get() = _popularMovies
 
-    private val _popularMoviesNetError by lazy { MutableLiveData<Throwable>() }
-    val popularMoviesNetError: LiveData<Throwable>
-        get() = _nowPlayingMoviesNetError
-
-
     private val _nowPlayingMovies by lazy { MutableLiveData<List<Movie>>() }
     val nowPlayingMovies: LiveData<List<Movie>>
         get() = _nowPlayingMovies
-
-    private val _nowPlayingMoviesNetError by lazy { MutableLiveData<Throwable>() }
-    val nowPlayingMoviesNetError: LiveData<Throwable>
-        get() = _nowPlayingMoviesNetError
-
 
     private val _searchMovies by lazy { MutableLiveData<List<Movie>>() }
     val searchMovies: LiveData<List<Movie>>
         get() = _searchMovies
 
-    private val _searchMoviesNetError by lazy { MutableLiveData<Throwable>() }
-    val searchMoviesNetError: LiveData<Throwable>
-        get() = _searchMoviesNetError
+    private val _isDataLoadingError by lazy { MutableLiveData<Boolean>() }
+    val isDataLoadingError: LiveData<Boolean>
+        get() = _isDataLoadingError
 
     fun completeSearch() {
         searchSubject.onComplete()
@@ -65,8 +55,10 @@ class MoviesViewModel @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ movies ->
                 _searchMovies.value = movies
+
+                _isDataLoadingError.value = false
             }, {
-                _searchMoviesNetError.value = it
+                _isDataLoadingError.value = true
             })
 
         compositeDisposable.add(searchMovieDisposable)
@@ -75,26 +67,22 @@ class MoviesViewModel @Inject constructor(
     fun getPopularMoviesFromDB() {
         compositeDisposable.add(
             moviesInteractor.getPopularMovies()
-                .subscribe({ movies ->
+                .subscribe { movies ->
                     _popularMovies.value = movies
 
                     loadPopularMovies()
-                }, {
-                    _popularMoviesNetError.value = it
-                })
+                }
         )
     }
 
     fun getNowPlayingMoviesFromDB() {
         compositeDisposable.add(
             moviesInteractor.getNowPlayingMovies()
-                .subscribe({ movies ->
+                .subscribe { movies ->
                     _nowPlayingMovies.value = movies
 
                     loadNowPlayingMovies()
-                }, {
-                    _nowPlayingMoviesNetError.value = it
-                })
+                }
         )
     }
 
@@ -103,8 +91,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadPopularMovies()
                 .subscribe({ movies ->
                     _popularMovies.value = movies
+                    _isDataLoadingError.value = false
                 }, {
-                    _popularMoviesNetError.value = it
+                    _isDataLoadingError.value = true
                 })
         )
     }
@@ -114,8 +103,9 @@ class MoviesViewModel @Inject constructor(
             moviesInteractor.loadNowPlayingMovies()
                 .subscribe({ movies ->
                     _nowPlayingMovies.value = movies
+                    _isDataLoadingError.value = false
                 }, {
-                    _nowPlayingMoviesNetError.value = it
+                    _isDataLoadingError.value = true
                 })
         )
     }

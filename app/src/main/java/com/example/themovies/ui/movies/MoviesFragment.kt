@@ -130,6 +130,17 @@ class MoviesFragment : Fragment() {
                 nowPlayingMoviesAdapter.submitList(movies)
             }
         })
+
+//        Error loading data
+
+        moviesViewModel.isDataLoadingError.observe(viewLifecycleOwner, Observer {
+            it?.let { isErrorLoading ->
+                if (isErrorLoading) {
+                    Snackbar.make(moviesLayout, R.string.error_data_loading, Snackbar.LENGTH_SHORT)
+                        .show()
+                }
+            }
+        })
     }
 
     private fun showSearchResultMovies(isShowSearchResult: Boolean) {

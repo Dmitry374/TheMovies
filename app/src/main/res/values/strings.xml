@@ -3,4 +3,6 @@
 
     <string name="popular_movies">Популярное</string>
     <string name="now_playing_movies">Новинки</string>
+
+    <string name="error_data_loading">Error data loading. Check the internet connection</string>
 </resources>
